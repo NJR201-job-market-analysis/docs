@@ -13,6 +13,47 @@
 - 擴展性: 只要加新節點進入叢集，服務可以自動擴展
 - 更細緻的部署控制: 可以用 placement、replicas、resource limits 等在 yaml 裡指定，省去手動分派負擔
 
-## 建立 Docker Swarm
+## 環境準備
 
-## 使用 Docker Swarm 進行佈署
+刪除所有 container
+```
+docker rm -f $(docker ps -a -q)
+```
+
+初始化 Docker Swarm
+```
+docker swarm init
+```
+
+建立網路
+```
+docker network create --scope=swarm --driver=overlay jobmarket-swarm-network
+```
+
+拉取 portainer 和 agent 的映像檔
+```
+docker pull portainer/portainer-ce:2.0.1
+docker pull portainer/agent
+```
+
+## 佈署服務
+
+所有的服務配置都在 services 倉庫下
+```
+cd /services
+```
+
+佈署 Portainer
+```
+docker stack deploy -c portainer.yml por
+```
+
+佈署 MySQL + PhpMyAdmin
+```
+docker stack deploy -c services/compose.mysql.yml mysql
+```
+
+佈署 RabbitMQ + Flower
+```
+docker stack deploy -c services/compose.rabbitmq.yml rabbitmq
+```
