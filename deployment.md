@@ -57,25 +57,25 @@ cd /services
 
 佈署 Portainer
 ```bash
-docker stack deploy -c portainer.yml por
+docker stack deploy --with-registry-auth -c portainer.yml por
 ```
 
 佈署 MySQL + PhpMyAdmin
 ```bash
-docker stack deploy -c compose.mysql.yml mysql
+docker stack deploy --with-registry-auth -c compose.mysql.yml mysql
 ```
 
 佈署 RabbitMQ + Flower
 ```bash
-docker stack deploy -c compose.rabbitmq.yml rabbitmq
+docker stack deploy --with-registry-auth -c compose.rabbitmq.yml rabbitmq
 ```
 
 佈署 Celery Worker
 ```bash
-docker stack deploy -c compose.worker.yml crawler
+docker stack deploy --with-registry-auth -c compose.worker.yml crawler
 ```
 
 佈署 Producer 發送任務
 ```bash
-docker stack deploy -c compose.producer.yml crawler
+docker stack deploy --with-registry-auth -c compose.producer.yml crawler
 ```
