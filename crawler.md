@@ -20,7 +20,7 @@ pipenv run celery -A crawlers.worker worker --loglevel=info --hostname=%h -Q job
 
 啟動 producer 爬取資料
 ```
-pipenv run python crawlers.cake.producer
+pipenv run python -m crawlers.cake.producer
 ```
 
 確認執行結果：

@@ -26,7 +26,7 @@ Please note that this token is specific to workers and should be kept secret
 
 建立網路
 ```bash
-docker network create --scope=swarm --driver=overlay jobmarket-swarm-network
+docker network create --scope=swarm --driver=overlay --attachable jobmarket-swarm-network
 ```
 
 拉取 portainer 和 agent 的映像檔
@@ -72,10 +72,10 @@ docker stack deploy --with-registry-auth -c compose.rabbitmq.yml rabbitmq
 
 佈署 Celery Worker
 ```bash
-DOCKER_IMAGE_USERNAME=xxx DOCKER_IMAGE_VERSION:xxx docker stack deploy --with-registry-auth -c compose.worker.yml crawler
+DOCKER_IMAGE_USERNAME=xxx DOCKER_IMAGE_VERSION=xxx docker stack deploy --with-registry-auth -c compose.worker.yml crawler
 ```
 
 佈署 Producer 發送任務
 ```bash
-DOCKER_IMAGE_USERNAME=xxx DOCKER_IMAGE_VERSION:xxx docker stack deploy --with-registry-auth -c compose.producer.yml crawler
+DOCKER_IMAGE_USERNAME=xxx DOCKER_IMAGE_VERSION=xxx docker stack deploy --with-registry-auth -c compose.producer.yml crawler
 ```
