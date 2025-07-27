@@ -72,10 +72,10 @@ docker stack deploy --with-registry-auth -c compose.rabbitmq.yml rabbitmq
 
 佈署 Celery Worker
 ```bash
-docker stack deploy --with-registry-auth -c compose.worker.yml crawler
+DOCKER_IMAGE_USERNAME=xxx DOCKER_IMAGE_VERSION:xxx docker stack deploy --with-registry-auth -c compose.worker.yml crawler
 ```
 
 佈署 Producer 發送任務
 ```bash
-docker stack deploy --with-registry-auth -c compose.producer.yml crawler
+DOCKER_IMAGE_USERNAME=xxx DOCKER_IMAGE_VERSION:xxx docker stack deploy --with-registry-auth -c compose.producer.yml crawler
 ```
