@@ -43,11 +43,11 @@ shared 是共用的模組
 2. DOCKER_IMAGE_USERNAME 指定自己的帳戶名稱
 
 構建指令
-```
+```bash
 docker build -f Dockerfile -t xxx/jobmarket-crawler:0.0.1 .
 ```
 
 推送到 Docker Hub
-```
-docker push your_username/jobmarket-crawler
+```bash
+docker push your_username/jobmarket-crawler:0.0.1
 ```
