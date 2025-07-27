@@ -1,6 +1,11 @@
 本地開發
 可以不透過 docker 省去反覆構建的麻煩，快速測試程式碼邏輯 (要確保在執行前，RabbitMQ、MySQL等服務都已經成功打開。)
 
+建立虛擬環境
+```
+pipenv --python ~/.pyenv/versions/3.8.10/bin/python
+```
+
 安裝依賴包
 ```
 pipenv install
@@ -39,7 +44,7 @@ shared 是共用的模組
 
 構建指令
 ```
-DOCKER_IMAGE_VERSION=0.0.0 DOCKER_IMAGE_USERNAME=xxxx docker build -f Dockerfile -t xxx/jobmarket-crawler
+docker build -f Dockerfile -t xxx/jobmarket-crawler:0.0.1 .
 ```
 
 推送到 Docker Hub

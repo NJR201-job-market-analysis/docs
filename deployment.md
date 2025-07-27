@@ -1,18 +1,3 @@
-## 前言: 為什麼要 docker swarm
-
-### 傳統手動用 Docker Compose 部署的問題
-
-實務上，會有很多台主機或虛擬機，如果沒有 Docker Swarm，你需要手動遠端登入每一台主機（SSH、RDP 等），在每台主機上執行 docker-compose up -d 等指令，多台機器間沒集中管理，不容易保持設定一致，若要更新服務，得一台一台操作，容易出錯或版本不一致，缺乏自動調度與容錯能力，例如節點掛了沒自動遷移服務
-
-### 使用 Docker Swarm 的優勢
-
-- 集中管理: 在任一 manager 節點執行 docker stack deploy -c docker-compose.yml mystack 即可部署整個叢集
-- 自動調度: Swarm 根據你的 deploy 配置，自動選擇符合條件的節點部署容器
-- 高可用性: 若某台節點掛了，Swarm 會自動在其他節點重啟容器
-- 滾動更新: 你可以設定滾動更新策略，讓服務平滑升級，不影響使用
-- 擴展性: 只要加新節點進入叢集，服務可以自動擴展
-- 更細緻的部署控制: 可以用 placement、replicas、resource limits 等在 yaml 裡指定，省去手動分派負擔
-
 ## 環境準備
 
 刪除所有 container
@@ -39,7 +24,6 @@ Please note that this token is specific to workers and should be kept secret
 # 把上面的指令在對應 worker 節點上執行，該節點就會加入 Swarm 集群。
 ```
 
-
 建立網路
 ```bash
 docker network create --scope=swarm --driver=overlay jobmarket-swarm-network
@@ -57,6 +41,13 @@ docker pull portainer/agent
 docker swarm leave --force
 ```
 
+構建爬蟲容器
+```bash
+docker build -f Dockerfile -t your_username/jobmarket-crawler:0.0.1 .
+
+docker push your_username/jobmarket-crawler:0.0.1
+```
+
 ## 佈署服務
 
 所有的服務配置都在 services 倉庫下
@@ -71,25 +62,20 @@ docker stack deploy -c portainer.yml por
 
 佈署 MySQL + PhpMyAdmin
 ```bash
-docker stack deploy -c services/compose.mysql.yml mysql
+docker stack deploy -c compose.mysql.yml mysql
 ```
 
 佈署 RabbitMQ + Flower
 ```bash
-docker stack deploy -c services/compose.rabbitmq.yml rabbitmq
-```
-
-構建和推送 crawler 容器到 Docker Hub
-```bash
-DOCKER_IMAGE_VERSION=0.0.0 DOCKER_IMAGE_USERNAME=xxxx docker build -f Dockerfile -t xxx/jobmarket-crawler
-docker push your_username/jobmarket-crawler
+docker stack deploy -c compose.rabbitmq.yml rabbitmq
 ```
 
 佈署 Celery Worker
 ```bash
-
+docker stack deploy -c compose.worker.yml crawler
 ```
 
 佈署 Producer 發送任務
 ```bash
+docker stack deploy -c compose.producer.yml crawler
 ```
