@@ -55,6 +55,8 @@ docker push your_username/jobmarket-crawler:0.0.1
 cd /services
 ```
 
+先搜索 NOTE: 關鍵字，替換服務版本
+
 佈署 Portainer
 ```bash
 docker stack deploy --with-registry-auth -c portainer.yml por
