@@ -16,7 +16,7 @@
 ## Stack 概念
 
 ```bash
-docker stack deploy -c portainer.yml por
+docker stack deploy --with-registry-auth -c portainer.yml por
 ```
 
 yml 後面的 `por`、`mysql`、`rabbitmq`、`crawler` 代表 Stack，　Stack 是 Docker Swarm 中的一個邏輯概念，代表一組相關服務的集合。它類似於 Docker Compose 的 "project"，但專為 Swarm 模式設計。
@@ -31,3 +31,20 @@ yml 後面的 `por`、`mysql`、`rabbitmq`、`crawler` 代表 Stack，　Stack �
 Stack = 整個資料庫系統，一個包含 MySQL 和 phpMyAdmin 的資料庫系統
 Service = 資料庫的各個服務，像是 MySQL 資料庫服務、phpMyAdmin 管理介面服務
 Container = 實際運行的資料庫程式，MySQL 服務運行一個 MySQL 資料庫程式、phpMyAdmin 服務運行一個 phpMyAdmin 網頁程式
+
+## 指令一覽
+
+刪除 stack
+```bash
+docker stack rm airflow api crawler mysql rabbitmq
+```
+
+刪除網路
+```bash
+docker network rm network-name
+```
+
+建立網路
+```bash
+docker network create --scope=swarm --driver=overlay --attachable network-name
+```
