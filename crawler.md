@@ -15,7 +15,6 @@ pipenv install -e .
 
 產生 .env
 ```bash
-cd /core
 ENV=DOCKER python3 genenv.py
 ```
 
