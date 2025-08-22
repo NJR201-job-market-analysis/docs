@@ -42,7 +42,7 @@ docker stack deploy --with-registry-auth -c portainer.yml por
 
 佈署 MySQL + PhpMyAdmin
 ```bash
-DATABASE_IMAGE_VERSION=0.0.0 docker stack deploy --with-registry-auth -c compose.mysql.yml mysql
+DOCKER_IMAGE_USERNAME=xxx DOCKER_IMAGE_VERSION=0.0.0 docker stack deploy --with-registry-auth -c compose.mysql.yml mysql
 ```
 
 佈署 RabbitMQ + Flower
