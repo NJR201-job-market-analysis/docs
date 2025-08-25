@@ -180,7 +180,7 @@ docker push your_username/jobmarket-dataflow:{version}.gce
 
 ```bash
 # 注意: 請替換為您的用戶名和版本
-DOCKER_IMAGE_USERNAME=your_username DOCKER_IMAGE_VERSION={version} docker stack deploy --with-registry-auth -c docker-compose-airflow.yml airflow
+DOCKER_IMAGE_USERNAME=your_username DOCKER_IMAGE_VERSION={version} docker stack deploy --with-registry-auth -c compose.airflow.yml airflow
 ```
 
 部署後，訪問 `http://localhost:8080` 來初始化 Airflow 資料庫。
