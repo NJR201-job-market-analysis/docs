@@ -1,29 +1,29 @@
-建立 python 虛擬環境
+## 建立 python 虛擬環境
 
 此種方式，可以在切換資料夾時，自動啟用/退出虛擬環境，並在 terminal 顯示當前虛擬服務的名稱
 
-切換到對應的資料夾，執行
+### 切換到對應的資料夾，執行
 ```bash
 pipenv --python ~/.pyenv/versions/3.8.10/bin/python
 ```
 
-安裝 direnv
+### 安裝 direnv
 ```
 sudo apt install direnv
 ```
 
-建立 .envrc
+### 建立 .envrc
 ```bash
 export VIRTUAL_ENV=/home/iyauta/.local/share/virtualenvs/services-PW3YRg8f
 export PATH="$VIRTUAL_ENV/bin:$PATH"
 ```
 
-初始化 direnv
+### 初始化 direnv
 ```bash
 direnv allow
 ```
 
-修改 .bashrc
+### 修改 .bashrc
 ```bash
 code ~/.bashrc
 

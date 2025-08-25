@@ -1,56 +1,64 @@
-本地開發
+# 爬蟲執行指南
 
-可以不透過 docker 省去反覆構建的麻煩，快速測試程式碼邏輯 (要確保在執行前，RabbitMQ、MySQL等服務都已經成功打開。)
+本文檔提供了在不同環境中設置和執行爬蟲的說明。
 
-建立虛擬環境
-```bash
-pipenv --python ~/.pyenv/versions/3.8.10/bin/python
-```
+## 先決條件
 
-安裝依賴包
-```bash
-pipenv install
-pipenv install -e .
-```
+在開始之前，請確保你已完成以下操作：
 
-產生 .env
+- 根據 `how-to-manage-python-virtualenv.md` 文件中的說明，建立並啟動你的 Python 虛擬環境。
+- 確保 RabbitMQ 和 MySQL 等所有必要的服務都已啟動並正在運行。
+
+## 本地開發
+
+在本地環境中，你可以直接執行爬蟲以進行快速測試和開發，從而無需 Docker 即可避免重複構建。
+
+### 1. 產生環境變數檔案
+
+首先，你需要產生 `.env` 環境變數檔案：
+
 ```bash
 ENV=DOCKER python3 genenv.py
 ```
 
-啟動 worker
+### 2. 執行爬蟲
+
+你可以直接執行每個爬蟲的 `main.py` 腳本：
+
 ```bash
-pipenv run celery -A crawlers.worker worker --loglevel=info --hostname=%h -Q jobmarket-worker-1
+# 執行 CakeResume 爬蟲
+pipenv run python -m crawlers.cake.main
+
+# 執行 104 爬蟲
+pipenv run python -m crawlers.104.main
+
+# 執行 1111 爬蟲
+pipenv run python -m crawlers.1111.main
+
+# 執行 Yourator 爬蟲
+pipenv run python -m crawlers.yourator.main
 ```
 
-啟動 producer 爬取資料
+## 分散式爬蟲
+
+對於分散式環境，你需要先部署好基礎服務。
+
+### 1. 啟動 Producer
+
+啟動 producer 來爬取資料。以 CakeResume 為例：
+
 ```bash
 pipenv run python -m crawlers.cake.producer
 ```
 
-確認執行結果：
-1. 訪問 `localhost:8080` 查看數據有沒有正確寫入
-2. 查看 worker 日誌 `docker logs jobmarket-worker-1`，看看有沒有報錯
+### 2. 驗證執行結果
 
----------------------------------------------------------------------
+你可以透過以下方式來確認執行結果：
 
-shared 是共用的模組
+1.  **檢查資料庫:** 訪問 `http://localhost:8080`，確認資料是否已成功寫入。
+2.  **查看 Worker 日誌:** 檢查 worker 的日誌以確認沒有錯誤發生。
 
-- logger 可以寫入日誌，並存放在 logs 資料夾下
-- db 用來將職缺資料寫入資料庫
-
-可參考 crawlers/cake/tasks 的寫法。
-
----------------------------------------------------------------------
-
-構建容器
-
-構建指令
-```bash
-docker build -f Dockerfile -t xxx/jobmarket-crawler:0.0.1 .
-```
-
-推送到 Docker Hub
-```bash
-docker push your_username/jobmarket-crawler:0.0.1
-```
+    ```bash
+    docker logs jobmarket-worker-1
+    ```
+3.  **從 Portainer 查看日誌:** 訪問 http://127.0.0.1:9000/#!/2/docker/services，檢查 worker 日誌。
